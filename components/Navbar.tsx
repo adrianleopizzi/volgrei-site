@@ -2,16 +2,17 @@ import Link from "next/link";
 
 export default function Navbar() {
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 border-b border-zinc-900 bg-[#0a0a0a]/80 backdrop-blur-md">
+    <nav className="fixed top-0 left-0 right-0 z-50 border-b backdrop-blur-md"
+      style={{ borderColor: "var(--border)", background: "color-mix(in srgb, var(--bg) 80%, transparent)" }}>
       <div className="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
-        <Link href="/" className="font-mono text-sm font-medium text-zinc-100 tracking-tight">
+        <Link href="/" className="text-sm font-medium tracking-tight" style={{ color: "var(--text-primary)" }}>
           Volgrei
         </Link>
         <div className="flex items-center gap-6">
-          <Link href="/support" className="font-mono text-xs text-zinc-600 hover:text-zinc-300 transition-colors">
+          <Link href="/support" className="text-xs transition-colors hover:opacity-80" style={{ color: "var(--text-secondary)" }}>
             Support
           </Link>
-          <a href="#" className="font-mono text-xs px-4 py-2 bg-[#7c3aed] text-white rounded-md hover:bg-[#6d28d9] transition-colors">
+          <a href="#" className="text-xs px-4 py-2 rounded-md transition-opacity hover:opacity-80 text-white" style={{ background: "var(--accent)" }}>
             App Store ↗
           </a>
         </div>

@@ -2,16 +2,16 @@ import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import Features from "@/components/Features";
 import Pricing from "@/components/Pricing";
-import Footer from "@/components/Footer";
+import FooterNav from "@/components/FooterNav";
 
 export default function Home() {
   return (
-    <div className="bg-[#0a0a0a] min-h-screen">
+    <div className="min-h-screen" style={{ background: "var(--bg)" }}>
       <Navbar />
       <Hero />
       <Features />
       <Pricing />
-      <Footer />
+      <FooterNav />
     </div>
   );
 }

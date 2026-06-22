@@ -28,19 +28,19 @@ const features = [
 export default function Features() {
   return (
     <section id="features" className="max-w-5xl mx-auto px-6 py-32">
-      <p className="font-mono text-[10px] tracking-widest uppercase text-zinc-600 mb-3">Features</p>
-      <h2 className="text-3xl font-light tracking-tight text-zinc-100 mb-16 max-w-md">
+      <p className="text-[10px] tracking-widest uppercase mb-3" style={{ color: "var(--text-muted)" }}>Features</p>
+      <h2 className="text-3xl font-light tracking-tight mb-16 max-w-md" style={{ color: "var(--text-primary)" }}>
         Everything a freelancer needs.<br />
-        <span className="text-zinc-600">Nothing they don&apos;t.</span>
+        <span style={{ color: "var(--text-muted)" }}>Nothing they don&apos;t.</span>
       </h2>
 
-      <div className="grid grid-cols-2 gap-px bg-zinc-900">
+      <div className="grid grid-cols-2 gap-px" style={{ background: "var(--border)" }}>
         {features.map((f) => (
-          <div key={f.tag} className="bg-[#0a0a0a] p-8 flex flex-col gap-4">
-            <span className="font-mono text-[10px] text-[#7c3aed] tracking-widest">{f.tag}</span>
-            <h3 className="text-base font-medium text-zinc-100">{f.title}</h3>
-            <p className="text-sm text-zinc-500 leading-relaxed">{f.desc}</p>
-            <p className="text-xs text-zinc-700 leading-relaxed">{f.detail}</p>
+          <div key={f.tag} className="p-8 flex flex-col gap-4" style={{ background: "var(--bg)" }}>
+            <span className="text-[10px] tracking-widest" style={{ color: "var(--accent)" }}>{f.tag}</span>
+            <h3 className="text-base font-medium" style={{ color: "var(--text-primary)" }}>{f.title}</h3>
+            <p className="text-sm leading-relaxed" style={{ color: "var(--text-secondary)" }}>{f.desc}</p>
+            <p className="text-xs leading-relaxed" style={{ color: "var(--text-muted)" }}>{f.detail}</p>
           </div>
         ))}
       </div>
