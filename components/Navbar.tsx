@@ -14,7 +14,7 @@ export default function Navbar() {
           height: "65px",
           backdropFilter: "blur(20px) saturate(160%)",
           WebkitBackdropFilter: "blur(20px) saturate(160%)",
-          background: "linear-gradient(to bottom, rgba(13, 13, 13, 1) 0%, rgba(13, 13, 13, 0.95) 30%, rgba(13, 13, 13, 0.85) 70%, rgba(13, 13, 13, 0.80) 100%)",
+          background: "linear-gradient(to bottom, rgba(8, 8, 9, 1) 0%, rgba(8, 8, 9, 0.95) 30%, rgba(8, 8, 9, 0.85) 70%, rgba(8, 8, 9, 0.80) 100%)",
           borderBottom: "1px solid rgba(42, 42, 42, 0.6)",
         }}
       >
@@ -57,14 +57,14 @@ export default function Navbar() {
                 aria-label="Menu"
               >
                 {open ? (
-                  <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                  <svg width="22" height="22" viewBox="0 0 18 18" fill="none">
                     <rect x="3" y="3" width="12" height="12" rx="2.5" stroke="var(--text-primary)" strokeWidth="1.2"/>
                     <line x1="3" y1="7" x2="15" y2="7" stroke="var(--text-primary)" strokeWidth="1"/>
                     <line x1="6" y1="10" x2="12" y2="10" stroke="var(--text-secondary)" strokeWidth="1.2" strokeLinecap="round"/>
                     <line x1="6" y1="12.5" x2="9.5" y2="12.5" stroke="var(--text-secondary)" strokeWidth="1.2" strokeLinecap="round"/>
                   </svg>
                 ) : (
-                  <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                  <svg width="22" height="22" viewBox="0 0 18 18" fill="none">
                     <rect x="3" y="3" width="12" height="12" rx="2.5" stroke="var(--text-secondary)" strokeWidth="1.2"/>
                     <line x1="6" y1="7" x2="12" y2="7" stroke="var(--text-secondary)" strokeWidth="1.2" strokeLinecap="round"/>
                     <line x1="6" y1="9.5" x2="12" y2="9.5" stroke="var(--text-secondary)" strokeWidth="1.2" strokeLinecap="round"/>
@@ -77,7 +77,7 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* Mobile menu */}
+      {/* Mobile menu — panel sotto header, glass */}
       {open && (
         <div
           className="fixed md:hidden z-40"
@@ -85,20 +85,40 @@ export default function Navbar() {
             top: "65px",
             left: 0,
             right: 0,
-            background: "rgba(13, 13, 13, 0.98)",
-            backdropFilter: "blur(20px)",
-            WebkitBackdropFilter: "blur(20px)",
-            borderBottom: "1px solid rgba(42, 42, 42, 0.6)",
-            padding: "16px max(16px, 4.4vw) 24px",
+            bottom: 0,
+            backdropFilter: "blur(20px) saturate(160%)",
+            WebkitBackdropFilter: "blur(20px) saturate(160%)",
+            background: "linear-gradient(to bottom, rgba(8, 8, 9, 0.85) 0%, rgba(8, 8, 9, 0.80) 100%)",
+            borderTop: "1px solid rgba(42, 42, 42, 0.6)",
+            padding: "40px max(16px, 4.4vw)",
+            display: "flex",
+            flexDirection: "column",
+            gap: "8px",
           }}
         >
           <Link
             href="/download"
-            className="block transition-opacity hover:opacity-60"
-            style={{ color: "var(--text-secondary)", fontSize: "15px", fontWeight: 500, paddingTop: "12px", paddingBottom: "12px" }}
+            className="transition-opacity hover:opacity-60"
+            style={{ color: "var(--text-primary)", fontSize: "28px", fontWeight: 600 }}
             onClick={() => setOpen(false)}
           >
             Download
+          </Link>
+          <Link
+            href="/login"
+            className="transition-opacity hover:opacity-60"
+            style={{ color: "var(--text-primary)", fontSize: "28px", fontWeight: 600 }}
+            onClick={() => setOpen(false)}
+          >
+            Log in
+          </Link>
+          <Link
+            href="/signup"
+            className="transition-opacity hover:opacity-60"
+            style={{ color: "var(--text-primary)", fontSize: "28px", fontWeight: 600 }}
+            onClick={() => setOpen(false)}
+          >
+            Sign up
           </Link>
         </div>
       )}
