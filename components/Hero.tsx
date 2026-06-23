@@ -1,31 +1,42 @@
 export default function Hero() {
   return (
-    <section className="min-h-screen flex flex-col justify-center max-w-5xl mx-auto px-6 pt-14">
-      <div className="max-w-3xl">
-        <p className="text-xs tracking-widest uppercase mb-8" style={{ color: "var(--text-muted)" }}>
-          <span className="inline-block w-1.5 h-1.5 rounded-full mr-2 align-middle" style={{ background: "var(--accent)" }} />
-          in development · iOS · launching soon
-        </p>
+    <section
+      className="min-h-screen flex flex-col"
+      style={{
+        maxWidth: "1400px",
+        margin: "0 auto",
+        paddingLeft: "max(16px, 4.4vw)",
+        paddingRight: "max(16px, 4.4vw)",
+        paddingTop: "270px",
+      }}
+    >
+      <h1
+        style={{
+          color: "var(--text-primary)",
+          fontSize: "clamp(32px, 4vw, 56px)",
+          fontWeight: 500,
+          lineHeight: 1.15,
+          letterSpacing: "-0.02em",
+        }}
+      >
+        <span
+          className="hero-line-1"
+          style={{ display: "block", transition: "transform 0.3s cubic-bezier(0.25,0.46,0.45,0.94)" }}
+        >
+          One system for tasks,
+        </span>
+        <span
+          className="hero-line-2"
+          style={{ display: "block", transition: "transform 0.3s cubic-bezier(0.25,0.46,0.45,0.94)" }}
+        >
+          notes, and your AI agent
+        </span>
+      </h1>
 
-        <h1 className="text-6xl font-light tracking-tighter leading-none mb-6" style={{ color: "var(--text-primary)" }}>
-          Your work,<br />
-          <span style={{ color: "var(--accent)" }}>finally</span><br />
-          under control.
-        </h1>
-
-        <p className="text-base leading-relaxed max-w-lg mb-10" style={{ color: "var(--text-secondary)" }}>
-          Volgrei is the execution workspace built for freelancers — task management, smart notes, and an AI agent that actually understands your workflow.
-        </p>
-
-        <div className="flex gap-3">
-          <a href="#" className="text-sm px-6 py-3 rounded-md transition-opacity hover:opacity-80 text-white" style={{ background: "var(--accent)" }}>
-            Download on App Store ↗
-          </a>
-          <a href="#features" className="text-sm px-6 py-3 rounded-md border transition-opacity hover:opacity-70" style={{ color: "var(--text-secondary)", borderColor: "var(--border)" }}>
-            Learn more
-          </a>
-        </div>
-      </div>
+      <style>{`
+        h1:hover .hero-line-1 { transform: translateX(-18px); }
+        h1:hover .hero-line-2 { transform: translateX(18px); }
+      `}</style>
     </section>
   );
 }

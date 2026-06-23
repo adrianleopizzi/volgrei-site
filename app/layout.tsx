@@ -8,8 +8,41 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Volgrei — Execution workspace for freelancers",
-  description: "Task management, smart notes, and AI — in one iOS app.",
+  title: "Volgrei - AI Workflow & Productivity App for Freelancers",
+  description: "Volgrei is the execution workspace for freelancers. Task management, smart notes, and Grei - your AI agent - in one iOS app.",
+  keywords: ["Volgrei", "volgrei app", "volgrei iOS", "productivity app freelancers", "AI workflow app", "task management freelancers", "Grei AI agent"],
+  authors: [{ name: "Volgrei", url: "https://volgrei.com" }],
+  creator: "Volgrei",
+  publisher: "Volgrei",
+  metadataBase: new URL("https://volgrei.com"),
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    title: "Volgrei - AI Workflow & Productivity App for Freelancers",
+    description: "Volgrei is the execution workspace for freelancers. Task management, smart notes, and Grei - your AI agent - in one iOS app.",
+    url: "https://volgrei.com",
+    siteName: "Volgrei",
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Volgrei - AI Workflow & Productivity App for Freelancers",
+    description: "Volgrei is the execution workspace for freelancers. Task management, smart notes, and Grei - your AI agent - in one iOS app.",
+    creator: "@volgrei",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
 };
 
 export default function RootLayout({
@@ -18,7 +51,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="it" className={`${inter.variable} h-full antialiased`}>
+    <html lang="en" className={`${inter.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col font-[var(--font-inter)]">{children}</body>
     </html>
   );

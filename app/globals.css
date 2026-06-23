@@ -13,6 +13,10 @@
   --accent-hover: #6d28d9;
 }
 
+html, body {
+  overflow-x: hidden;
+}
+
 body {
   background: var(--bg);
   color: var(--text-primary);
