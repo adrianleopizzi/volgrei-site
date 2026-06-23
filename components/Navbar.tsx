@@ -25,40 +25,50 @@ export default function Navbar() {
             </Link>
             <div className="flex items-center">
               {/* Links visibili solo su desktop */}
-              <Link href="/download" className="md:block hidden transition-opacity hover:opacity-60" style={{ color: "var(--text-secondary)", fontSize: "13px", fontWeight: 500, marginRight: "30px" }}>
+              <Link href="/download" className="md:block hidden transition-opacity hover:opacity-60" style={{ color: "var(--text-secondary)", fontSize: "13px", fontWeight: 400, marginRight: "30px" }}>
                 Download
               </Link>
 
               {/* Divisorio visibile solo su desktop */}
               <div className="md:block hidden" style={{ width: "1px", height: "16px", background: "var(--border)" }} />
 
-              <Link href="/login" className="transition-opacity hover:opacity-60" style={{ color: "var(--text-secondary)", fontSize: "13px", fontWeight: 500, marginLeft: "30px" }}>
+              <Link href="/login" className="transition-opacity hover:opacity-60" style={{ color: "var(--text-secondary)", fontSize: "13px", fontWeight: 400, marginLeft: "30px" }}>
                 Log in
               </Link>
               <Link
                 href="/signup"
                 className="rounded-full transition-opacity hover:opacity-80 text-black"
-                style={{ background: "#ffffff", padding: "6px 12px", fontSize: "13px", fontWeight: 500, marginLeft: "17px" }}
+                style={{ background: "#f0f0f0", padding: "6px 12px", fontSize: "13px", fontWeight: 500, marginLeft: "17px" }}
               >
                 Sign up
               </Link>
 
-              {/* Hamburger visibile solo su mobile */}
+              {/* Toggle visibile solo su mobile */}
               <button
-                className="md:hidden flex items-center justify-center transition-opacity hover:opacity-60"
+                className="md:hidden flex items-center justify-center"
                 onClick={() => setOpen(!open)}
-                style={{ marginLeft: "16px", color: "var(--text-primary)", background: "none", border: "none", cursor: "pointer", padding: "4px" }}
+                style={{
+                  marginLeft: "16px",
+                  cursor: "pointer",
+                  background: "none",
+                  border: "none",
+                  padding: 0,
+                }}
                 aria-label="Menu"
               >
                 {open ? (
                   <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-                    <line x1="2" y1="2" x2="16" y2="16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-                    <line x1="16" y1="2" x2="2" y2="16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+                    <rect x="3" y="3" width="12" height="12" rx="2.5" stroke="var(--text-primary)" strokeWidth="1.2"/>
+                    <line x1="3" y1="7" x2="15" y2="7" stroke="var(--text-primary)" strokeWidth="1"/>
+                    <line x1="6" y1="10" x2="12" y2="10" stroke="var(--text-secondary)" strokeWidth="1.2" strokeLinecap="round"/>
+                    <line x1="6" y1="12.5" x2="9.5" y2="12.5" stroke="var(--text-secondary)" strokeWidth="1.2" strokeLinecap="round"/>
                   </svg>
                 ) : (
                   <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-                    <line x1="2" y1="6" x2="16" y2="6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-                    <line x1="2" y1="12" x2="16" y2="12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+                    <rect x="3" y="3" width="12" height="12" rx="2.5" stroke="var(--text-secondary)" strokeWidth="1.2"/>
+                    <line x1="6" y1="7" x2="12" y2="7" stroke="var(--text-secondary)" strokeWidth="1.2" strokeLinecap="round"/>
+                    <line x1="6" y1="9.5" x2="12" y2="9.5" stroke="var(--text-secondary)" strokeWidth="1.2" strokeLinecap="round"/>
+                    <line x1="6" y1="12" x2="10" y2="12" stroke="var(--text-secondary)" strokeWidth="1.2" strokeLinecap="round"/>
                   </svg>
                 )}
               </button>
