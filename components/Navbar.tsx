@@ -1,10 +1,47 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
+import { supabase } from "@/lib/supabase";
+import { useRouter } from "next/navigation";
 
 export default function Navbar() {
+  const router = useRouter();
   const [open, setOpen] = useState(false);
+  const [user, setUser] = useState<any>(null);
+  const [profileOpen, setProfileOpen] = useState(false);
+  const profileRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // Leggi sessione attuale
+    supabase.auth.getSession().then(({ data }) => {
+      setUser(data.session?.user ?? null);
+    });
+
+    // Ascolta cambiamenti auth
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  // Chiudi dropdown profilo se clicchi fuori
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (profileRef.current && !profileRef.current.contains(e.target as Node)) {
+        setProfileOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  async function handleSignOut() {
+    await supabase.auth.signOut();
+    setProfileOpen(false);
+    router.push("/");
+  }
 
   return (
     <>
@@ -32,28 +69,89 @@ export default function Navbar() {
               {/* Divisorio visibile solo su desktop */}
               <div className="md:block hidden" style={{ width: "1px", height: "16px", background: "var(--border)" }} />
 
-              <Link href="/login" className="transition-opacity hover:opacity-60" style={{ color: "var(--text-secondary)", fontSize: "13px", fontWeight: 400, marginLeft: "30px" }}>
-                Log in
-              </Link>
-              <Link
-                href="/signup"
-                className="rounded-full transition-opacity hover:opacity-80 text-black"
-                style={{ background: "#f0f0f0", padding: "6px 12px", fontSize: "13px", fontWeight: 500, marginLeft: "17px" }}
-              >
-                Sign up
-              </Link>
+              {user ? (
+                /* Utente loggato — icona profilo con dropdown */
+                <div ref={profileRef} style={{ position: "relative", marginLeft: "30px" }}>
+                  <button
+                    onClick={() => setProfileOpen(!profileOpen)}
+                    style={{ background: "none", border: "none", cursor: "pointer", padding: 0, display: "flex", alignItems: "center" }}
+                    aria-label="Profilo"
+                  >
+                    <div style={{
+                      width: "32px",
+                      height: "32px",
+                      borderRadius: "50%",
+                      background: "var(--surface)",
+                      border: "1px solid var(--border)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}>
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <circle cx="8" cy="5.5" r="2.5" stroke="var(--text-secondary)" strokeWidth="1.2"/>
+                        <path d="M2.5 13c0-2.485 2.462-4.5 5.5-4.5s5.5 2.015 5.5 4.5" stroke="var(--text-secondary)" strokeWidth="1.2" strokeLinecap="round"/>
+                      </svg>
+                    </div>
+                  </button>
+
+                  {profileOpen && (
+                    <div style={{
+                      position: "absolute",
+                      top: "calc(100% + 10px)",
+                      right: 0,
+                      background: "var(--surface)",
+                      border: "1px solid var(--border)",
+                      borderRadius: "10px",
+                      padding: "6px",
+                      minWidth: "160px",
+                      zIndex: 100,
+                    }}>
+                      <p style={{ fontSize: "12px", color: "var(--text-muted)", padding: "6px 10px 8px" }}>
+                        {user.email}
+                      </p>
+                      <div style={{ height: "1px", background: "var(--border)", margin: "0 0 6px" }} />
+                      <button
+                        onClick={handleSignOut}
+                        style={{
+                          width: "100%",
+                          background: "none",
+                          border: "none",
+                          cursor: "pointer",
+                          padding: "8px 10px",
+                          fontSize: "13px",
+                          color: "#f87171",
+                          textAlign: "left",
+                          borderRadius: "6px",
+                        }}
+                        onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(248,113,113,0.08)")}
+                        onMouseLeave={(e) => (e.currentTarget.style.background = "none")}
+                      >
+                        Sign out
+                      </button>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                /* Utente non loggato */
+                <>
+                  <Link href="/login" className="transition-opacity hover:opacity-60" style={{ color: "var(--text-secondary)", fontSize: "13px", fontWeight: 400, marginLeft: "30px" }}>
+                    Log in
+                  </Link>
+                  <Link
+                    href="/signup"
+                    className="rounded-full transition-opacity hover:opacity-80 text-black"
+                    style={{ background: "#f0f0f0", padding: "6px 12px", fontSize: "13px", fontWeight: 500, marginLeft: "17px" }}
+                  >
+                    Sign up
+                  </Link>
+                </>
+              )}
 
               {/* Toggle visibile solo su mobile */}
               <button
                 className="md:hidden flex items-center justify-center"
                 onClick={() => setOpen(!open)}
-                style={{
-                  marginLeft: "16px",
-                  cursor: "pointer",
-                  background: "none",
-                  border: "none",
-                  padding: 0,
-                }}
+                style={{ marginLeft: "16px", cursor: "pointer", background: "none", border: "none", padding: 0 }}
                 aria-label="Menu"
               >
                 {open ? (
@@ -104,22 +202,33 @@ export default function Navbar() {
           >
             Download
           </Link>
-          <Link
-            href="/login"
-            className="transition-opacity hover:opacity-60"
-            style={{ color: "var(--text-primary)", fontSize: "28px", fontWeight: 600 }}
-            onClick={() => setOpen(false)}
-          >
-            Log in
-          </Link>
-          <Link
-            href="/signup"
-            className="transition-opacity hover:opacity-60"
-            style={{ color: "var(--text-primary)", fontSize: "28px", fontWeight: 600 }}
-            onClick={() => setOpen(false)}
-          >
-            Sign up
-          </Link>
+          {user ? (
+            <button
+              onClick={() => { handleSignOut(); setOpen(false); }}
+              style={{ background: "none", border: "none", cursor: "pointer", color: "#f87171", fontSize: "28px", fontWeight: 600, textAlign: "left", padding: 0 }}
+            >
+              Sign out
+            </button>
+          ) : (
+            <>
+              <Link
+                href="/login"
+                className="transition-opacity hover:opacity-60"
+                style={{ color: "var(--text-primary)", fontSize: "28px", fontWeight: 600 }}
+                onClick={() => setOpen(false)}
+              >
+                Log in
+              </Link>
+              <Link
+                href="/signup"
+                className="transition-opacity hover:opacity-60"
+                style={{ color: "var(--text-primary)", fontSize: "28px", fontWeight: 600 }}
+                onClick={() => setOpen(false)}
+              >
+                Sign up
+              </Link>
+            </>
+          )}
         </div>
       )}
     </>
