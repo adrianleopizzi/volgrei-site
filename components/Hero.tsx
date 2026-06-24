@@ -1,13 +1,13 @@
 export default function Hero() {
   return (
     <section
-      className="min-h-screen flex flex-col"
       style={{
         maxWidth: "1400px",
         margin: "0 auto",
         paddingLeft: "max(16px, 4.4vw)",
         paddingRight: "max(16px, 4.4vw)",
         paddingTop: "270px",
+        paddingBottom: "270px",
       }}
     >
       <h1
