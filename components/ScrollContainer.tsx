@@ -136,7 +136,7 @@ export default function ScrollContainer({ children }: { children: React.ReactNod
           right: "3px",
           top: "2px",
           bottom: isMobile ? "10px" : "20px",
-          width: isMobile ? "2px" : "6px",
+          width: isMobile ? "4px" : "6px",
           cursor: "default",
         }}
       >
