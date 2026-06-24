@@ -13,13 +13,24 @@ export default function ScrollContainer({ children }: { children: React.ReactNod
   const isDragging = useRef(false);
   const dragStartY = useRef(0);
   const dragStartScroll = useRef(0);
+  const hideTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [isMobile, setIsMobile] = useState(false);
+  const [visible, setVisible] = useState(false);
+  const [dragging, setDragging] = useState(false);
 
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth < 768);
     check();
     window.addEventListener("resize", check);
     return () => window.removeEventListener("resize", check);
+  }, []);
+
+  const showThumb = useCallback(() => {
+    setVisible(true);
+    if (hideTimer.current) clearTimeout(hideTimer.current);
+    hideTimer.current = setTimeout(() => {
+      setVisible(false);
+    }, 1000);
   }, []);
 
   const updateThumb = useCallback(() => {
@@ -43,7 +54,10 @@ export default function ScrollContainer({ children }: { children: React.ReactNod
     thumb.style.height = `${thumbHeight}px`;
     thumb.style.transform = `translateY(${thumbTop}px) scaleY(${squish})`;
     thumb.style.transformOrigin = overTop > 0 ? "top" : "bottom";
-    thumb.style.opacity = scrollHeight > clientHeight ? "1" : "0";
+
+    if (scrollHeight <= clientHeight) {
+      thumb.style.opacity = "0";
+    }
   }, []);
 
   // Ripristina posizione scroll al cambio pagina
@@ -61,21 +75,27 @@ export default function ScrollContainer({ children }: { children: React.ReactNod
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
-    el.addEventListener("scroll", updateThumb);
+    const onScroll = () => {
+      updateThumb();
+      showThumb();
+    };
+    el.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", updateThumb);
     updateThumb();
     return () => {
-      el.removeEventListener("scroll", updateThumb);
+      el.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", updateThumb);
     };
-  }, [updateThumb]);
+  }, [updateThumb, showThumb]);
 
-  // Drag thumb
+  // Drag thumb - mouse
   const onMouseDown = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
     isDragging.current = true;
+    setDragging(true);
     dragStartY.current = e.clientY;
     dragStartScroll.current = containerRef.current?.scrollTop ?? 0;
+    if (hideTimer.current) clearTimeout(hideTimer.current);
 
     const onMouseMove = (e: MouseEvent) => {
       if (!isDragging.current || !containerRef.current || !trackRef.current || !thumbRef.current) return;
@@ -89,12 +109,44 @@ export default function ScrollContainer({ children }: { children: React.ReactNod
 
     const onMouseUp = () => {
       isDragging.current = false;
+      setDragging(false);
       document.removeEventListener("mousemove", onMouseMove);
       document.removeEventListener("mouseup", onMouseUp);
+      hideTimer.current = setTimeout(() => setVisible(false), 1000);
     };
 
     document.addEventListener("mousemove", onMouseMove);
     document.addEventListener("mouseup", onMouseUp);
+  }, []);
+
+  // Drag thumb - touch
+  const onTouchStart = useCallback((e: React.TouchEvent) => {
+    isDragging.current = true;
+    setDragging(true);
+    dragStartY.current = e.touches[0].clientY;
+    dragStartScroll.current = containerRef.current?.scrollTop ?? 0;
+    if (hideTimer.current) clearTimeout(hideTimer.current);
+
+    const onTouchMove = (e: TouchEvent) => {
+      if (!isDragging.current || !containerRef.current || !trackRef.current || !thumbRef.current) return;
+      const { scrollHeight, clientHeight } = containerRef.current;
+      const trackHeight = trackRef.current.clientHeight;
+      const thumbHeight = thumbRef.current.clientHeight;
+      const delta = e.touches[0].clientY - dragStartY.current;
+      const scrollRatio = (scrollHeight - clientHeight) / (trackHeight - thumbHeight);
+      containerRef.current.scrollTop = dragStartScroll.current + delta * scrollRatio;
+    };
+
+    const onTouchEnd = () => {
+      isDragging.current = false;
+      setDragging(false);
+      document.removeEventListener("touchmove", onTouchMove);
+      document.removeEventListener("touchend", onTouchEnd);
+      hideTimer.current = setTimeout(() => setVisible(false), 1000);
+    };
+
+    document.addEventListener("touchmove", onTouchMove, { passive: true });
+    document.addEventListener("touchend", onTouchEnd);
   }, []);
 
   // Click sul track per saltare
@@ -107,11 +159,15 @@ export default function ScrollContainer({ children }: { children: React.ReactNod
     const trackHeight = trackRef.current.clientHeight;
     const scrollRatio = (scrollHeight - clientHeight) / (trackHeight - thumbHeight);
     containerRef.current.scrollTop = (clickY - thumbHeight / 2) * scrollRatio;
-  }, []);
+    showThumb();
+  }, [showThumb]);
+
+  const baseWidth = isMobile ? 4 : 6;
+  const activeWidth = dragging ? Math.round(baseWidth * 1.5) : baseWidth;
 
   return (
     <div style={{ position: "fixed", top: "65px", left: 0, right: 0, bottom: 0 }}>
-      {/* Contenuto scrollabile - scrollbar nativa nascosta */}
+      {/* Contenuto scrollabile */}
       <div
         ref={containerRef}
         style={{
@@ -121,7 +177,8 @@ export default function ScrollContainer({ children }: { children: React.ReactNod
           overflowX: "hidden",
           background: "var(--bg)",
           scrollbarWidth: "none",
-        }}
+          WebkitOverflowScrolling: "touch",
+        } as React.CSSProperties}
         className="[&::-webkit-scrollbar]:hidden"
       >
         {children}
@@ -133,30 +190,38 @@ export default function ScrollContainer({ children }: { children: React.ReactNod
         onClick={onTrackClick}
         style={{
           position: "absolute",
-          right: "3px",
+          right: isMobile ? "2px" : "3px",
           top: "2px",
-          bottom: isMobile ? "10px" : "20px",
-          width: isMobile ? "4px" : "6px",
+          bottom: isMobile ? "0px" : "20px",
+          width: `${activeWidth}px`,
           cursor: "default",
+          transition: "width 0.15s ease",
         }}
       >
         {/* Thumb */}
         <div
           ref={thumbRef}
           onMouseDown={onMouseDown}
+          onTouchStart={onTouchStart}
           style={{
             position: "absolute",
             top: 0,
             left: 0,
             right: 0,
             borderRadius: "999px",
-            background: "rgba(139, 143, 154, 0.4)",
-            opacity: 0,
-            transition: "opacity 0.2s, background 0.15s",
+            background: dragging
+              ? "rgba(139, 143, 154, 0.8)"
+              : "rgba(139, 143, 154, 0.4)",
+            opacity: visible ? 1 : 0,
+            transition: `opacity ${visible ? "0.1s" : "0.4s"} ease, background 0.15s ease`,
             cursor: "default",
           }}
-          onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(139, 143, 154, 0.7)")}
-          onMouseLeave={(e) => (e.currentTarget.style.background = "rgba(139, 143, 154, 0.4)")}
+          onMouseEnter={(e) => {
+            if (!dragging) e.currentTarget.style.background = "rgba(139, 143, 154, 0.7)";
+          }}
+          onMouseLeave={(e) => {
+            if (!dragging) e.currentTarget.style.background = "rgba(139, 143, 154, 0.4)";
+          }}
         />
       </div>
     </div>
