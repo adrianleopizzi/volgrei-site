@@ -13,12 +13,10 @@ export default function Navbar() {
   const profileRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Leggi sessione attuale
     supabase.auth.getSession().then(({ data }) => {
       setUser(data.session?.user ?? null);
     });
 
-    // Ascolta cambiamenti auth
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
     });
@@ -26,7 +24,6 @@ export default function Navbar() {
     return () => subscription.unsubscribe();
   }, []);
 
-  // Chiudi dropdown profilo se clicchi fuori
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
       if (profileRef.current && !profileRef.current.contains(e.target as Node)) {
@@ -56,21 +53,24 @@ export default function Navbar() {
         }}
       >
         <div className="w-full flex items-center justify-center" style={{ height: "65px" }}>
-          <div className="w-full flex items-center justify-between" style={{ maxWidth: "1400px", paddingLeft: "max(16px, 4.4vw)", paddingRight: "max(16px, 4.4vw)" }}>
+          <div
+            className="w-full flex items-center justify-between"
+            style={{
+              paddingLeft: "clamp(16px, 5.1vw, 80px)",
+              paddingRight: "clamp(16px, 5.1vw, 80px)",
+            }}
+          >
             <Link href="/" className="tracking-tight" style={{ color: "var(--text-primary)", fontSize: "20px", fontWeight: 700 }}>
               Volgrei
             </Link>
             <div className="flex items-center">
-              {/* Links visibili solo su desktop */}
               <Link href="/download" className="md:block hidden transition-opacity hover:opacity-60" style={{ color: "var(--text-secondary)", fontSize: "13px", fontWeight: 400, marginRight: "30px" }}>
                 Download
               </Link>
 
-              {/* Divisorio visibile solo su desktop */}
               <div className="md:block hidden" style={{ width: "1px", height: "16px", background: "var(--border)" }} />
 
               {user ? (
-                /* Utente loggato — icona profilo con dropdown */
                 <div ref={profileRef} style={{ position: "relative", marginLeft: "30px" }}>
                   <button
                     onClick={() => setProfileOpen(!profileOpen)}
@@ -132,7 +132,6 @@ export default function Navbar() {
                   )}
                 </div>
               ) : (
-                /* Utente non loggato */
                 <>
                   <Link href="/login" className="transition-opacity hover:opacity-60" style={{ color: "var(--text-secondary)", fontSize: "13px", fontWeight: 400, marginLeft: "30px" }}>
                     Log in
@@ -140,14 +139,13 @@ export default function Navbar() {
                   <Link
                     href="/signup"
                     className="rounded-full transition-opacity hover:opacity-80 text-black"
-                    style={{ background: "#f0f0f0", padding: "6px 12px", fontSize: "13px", fontWeight: 500, marginLeft: "17px" }}
+                    style={{ background: "#f0f0f0", padding: "7px 13px 6px 13px", fontSize: "13px", fontWeight: 500, marginLeft: "17px" }}
                   >
                     Sign up
                   </Link>
                 </>
               )}
 
-              {/* Toggle visibile solo su mobile */}
               <button
                 className="md:hidden flex items-center justify-center"
                 onClick={() => setOpen(!open)}
@@ -175,7 +173,6 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* Mobile menu — panel sotto header, glass */}
       {open && (
         <div
           className="fixed md:hidden z-40"
@@ -188,7 +185,7 @@ export default function Navbar() {
             WebkitBackdropFilter: "blur(20px) saturate(160%)",
             background: "linear-gradient(to bottom, rgba(8, 8, 9, 0.85) 0%, rgba(8, 8, 9, 0.80) 100%)",
             borderTop: "1px solid rgba(42, 42, 42, 0.6)",
-            padding: "40px max(16px, 4.4vw)",
+            padding: "40px clamp(16px, 5.1vw, 80px)",
             display: "flex",
             flexDirection: "column",
             gap: "8px",
