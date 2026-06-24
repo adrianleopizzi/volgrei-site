@@ -20,7 +20,6 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/",
   },
-  themeColor: "#080809",
   openGraph: {
     title: "Volgrei - AI Workflow & Productivity App for Freelancers",
     description: "Volgrei is the execution workspace for freelancers. Task management, smart notes, and Grei - your AI agent - in one iOS app.",

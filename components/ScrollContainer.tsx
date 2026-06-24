@@ -34,7 +34,7 @@ export default function ScrollContainer({ children }: { children: React.ReactNod
   const showThumb = useCallback(() => {
     setVisible(true);
     if (hideTimer.current) clearTimeout(hideTimer.current);
-    hideTimer.current = setTimeout(() => setVisible(false), 2000);
+    hideTimer.current = setTimeout(() => setVisible(false), 1000);
   }, []);
 
   const updateThumb = useCallback(() => {
@@ -132,7 +132,7 @@ export default function ScrollContainer({ children }: { children: React.ReactNod
       (document.body.style as any).WebkitUserSelect = "";
       document.removeEventListener("mousemove", onMouseMove);
       document.removeEventListener("mouseup", onMouseUp);
-      hideTimer.current = setTimeout(() => setVisible(false), 2000);
+      hideTimer.current = setTimeout(() => setVisible(false), 1000);
     };
 
     document.addEventListener("mousemove", onMouseMove);
@@ -162,7 +162,7 @@ export default function ScrollContainer({ children }: { children: React.ReactNod
       setDragging(false);
       document.removeEventListener("touchmove", onTouchMove);
       document.removeEventListener("touchend", onTouchEnd);
-      hideTimer.current = setTimeout(() => setVisible(false), 2000);
+      hideTimer.current = setTimeout(() => setVisible(false), 1000);
     };
 
     document.addEventListener("touchmove", onTouchMove, { passive: true });
