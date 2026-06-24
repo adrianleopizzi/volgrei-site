@@ -110,6 +110,7 @@ export default function ScrollContainer({ children }: { children: React.ReactNod
           position: "absolute",
           inset: 0,
           overflowY: "scroll",
+          overflowX: "hidden",
           background: "var(--bg)",
           scrollbarWidth: "none",
         }}
@@ -127,7 +128,7 @@ export default function ScrollContainer({ children }: { children: React.ReactNod
           right: "3px",
           top: "2px",
           bottom: "20px",
-          width: "8px",
+          width: "6px",
           cursor: "default",
         }}
       >
