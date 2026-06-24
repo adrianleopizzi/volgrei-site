@@ -61,12 +61,32 @@ export default function ScrollContainer({ children }: { children: React.ReactNod
     if (scrollHeight <= clientHeight) thumb.style.opacity = "0";
   }, []);
 
+  // iOS status bar tap → scroll to top
+  useEffect(() => {
+    const onWindowScroll = () => {
+      if (window.scrollY === 0 && containerRef.current) {
+        containerRef.current.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    };
+    window.addEventListener("scroll", onWindowScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onWindowScroll);
+  }, []);
+
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
     el.scrollTop = scrollPositions.get(pathname) ?? 0;
     updateThumb();
-    return () => { scrollPositions.set(pathname, el.scrollTop); };
+
+    // Registra scroll-to-top per tap status bar iOS
+    (window as any).__scrollToTop = () => {
+      el.scrollTo({ top: 0, behavior: "smooth" });
+    };
+
+    return () => {
+      scrollPositions.set(pathname, el.scrollTop);
+      (window as any).__scrollToTop = null;
+    };
   }, [pathname, updateThumb]);
 
   useEffect(() => {
@@ -119,23 +139,12 @@ export default function ScrollContainer({ children }: { children: React.ReactNod
     document.addEventListener("mouseup", onMouseUp);
   }, []);
 
-  // Touch drag con inerzia Apple-like
-  const velocityRef = useRef(0);
-  const lastTouchY = useRef(0);
-  const lastTouchTime = useRef(0);
-  const inertiaRAF = useRef<number | null>(null);
-
+  // Touch drag semplice e stabile
   const onTouchStart = useCallback((e: React.TouchEvent) => {
-    // Cancella inerzia in corso
-    if (inertiaRAF.current) cancelAnimationFrame(inertiaRAF.current);
-    velocityRef.current = 0;
-
     isDragging.current = true;
     setDragging(true);
     dragStartY.current = e.touches[0].clientY;
     dragStartScroll.current = containerRef.current?.scrollTop ?? 0;
-    lastTouchY.current = e.touches[0].clientY;
-    lastTouchTime.current = performance.now();
     if (hideTimer.current) clearTimeout(hideTimer.current);
 
     const onTouchMove = (e: TouchEvent) => {
@@ -146,15 +155,6 @@ export default function ScrollContainer({ children }: { children: React.ReactNod
       const delta = e.touches[0].clientY - dragStartY.current;
       const scrollRatio = (scrollHeight - clientHeight) / (trackHeight - thumbHeight);
       containerRef.current.scrollTop = dragStartScroll.current + delta * scrollRatio;
-
-      // Calcola velocità
-      const now = performance.now();
-      const dt = now - lastTouchTime.current;
-      if (dt > 0) {
-        velocityRef.current = (e.touches[0].clientY - lastTouchY.current) / dt * scrollRatio * -1;
-      }
-      lastTouchY.current = e.touches[0].clientY;
-      lastTouchTime.current = now;
     };
 
     const onTouchEnd = () => {
@@ -162,23 +162,7 @@ export default function ScrollContainer({ children }: { children: React.ReactNod
       setDragging(false);
       document.removeEventListener("touchmove", onTouchMove);
       document.removeEventListener("touchend", onTouchEnd);
-
-      // Avvia inerzia
-      const friction = 0.92; // più alto = scivola più a lungo
-      const minVelocity = 0.05;
-
-      const applyInertia = () => {
-        if (!containerRef.current) return;
-        if (Math.abs(velocityRef.current) < minVelocity) {
-          hideTimer.current = setTimeout(() => setVisible(false), 2000);
-          return;
-        }
-        containerRef.current.scrollTop += velocityRef.current * 16;
-        velocityRef.current *= friction;
-        inertiaRAF.current = requestAnimationFrame(applyInertia);
-      };
-
-      inertiaRAF.current = requestAnimationFrame(applyInertia);
+      hideTimer.current = setTimeout(() => setVisible(false), 2000);
     };
 
     document.addEventListener("touchmove", onTouchMove, { passive: true });
@@ -211,7 +195,7 @@ export default function ScrollContainer({ children }: { children: React.ReactNod
           overflowX: "hidden",
           background: "var(--bg)",
           scrollbarWidth: "none",
-          WebkitOverflowScrolling: "touch",
+          overscrollBehavior: "contain",
         } as React.CSSProperties}
         className="[&::-webkit-scrollbar]:hidden"
       >
