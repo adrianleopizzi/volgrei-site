@@ -30,7 +30,7 @@ export default function ScrollContainer({ children }: { children: React.ReactNod
     if (hideTimer.current) clearTimeout(hideTimer.current);
     hideTimer.current = setTimeout(() => {
       setVisible(false);
-    }, 1000);
+    }, 1500);
   }, []);
 
   const updateThumb = useCallback(() => {
@@ -112,7 +112,7 @@ export default function ScrollContainer({ children }: { children: React.ReactNod
       setDragging(false);
       document.removeEventListener("mousemove", onMouseMove);
       document.removeEventListener("mouseup", onMouseUp);
-      hideTimer.current = setTimeout(() => setVisible(false), 1000);
+      hideTimer.current = setTimeout(() => setVisible(false), 1500);
     };
 
     document.addEventListener("mousemove", onMouseMove);
@@ -142,7 +142,7 @@ export default function ScrollContainer({ children }: { children: React.ReactNod
       setDragging(false);
       document.removeEventListener("touchmove", onTouchMove);
       document.removeEventListener("touchend", onTouchEnd);
-      hideTimer.current = setTimeout(() => setVisible(false), 1000);
+      hideTimer.current = setTimeout(() => setVisible(false), 1500);
     };
 
     document.addEventListener("touchmove", onTouchMove, { passive: true });
@@ -190,7 +190,7 @@ export default function ScrollContainer({ children }: { children: React.ReactNod
         onClick={onTrackClick}
         style={{
           position: "absolute",
-          right: isMobile ? "2px" : "3px",
+          right: "3px",
           top: "2px",
           bottom: isMobile ? "0px" : "20px",
           width: `${activeWidth}px`,
@@ -222,7 +222,21 @@ export default function ScrollContainer({ children }: { children: React.ReactNod
           onMouseLeave={(e) => {
             if (!dragging) e.currentTarget.style.background = "rgba(139, 143, 154, 0.4)";
           }}
-        />
+        >
+          {/* Area di touch estesa invisibile su mobile */}
+          {isMobile && (
+            <div
+              onTouchStart={onTouchStart}
+              style={{
+                position: "absolute",
+                top: 0,
+                left: "-16px",
+                right: "-16px",
+                bottom: 0,
+              }}
+            />
+          )}
+        </div>
       </div>
     </div>
   );
