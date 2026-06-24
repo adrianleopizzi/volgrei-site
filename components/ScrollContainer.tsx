@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useCallback } from "react";
+import { useEffect, useRef, useCallback, useState } from "react";
 import { usePathname } from "next/navigation";
 
 const scrollPositions = new Map<string, number>();
@@ -13,6 +13,14 @@ export default function ScrollContainer({ children }: { children: React.ReactNod
   const isDragging = useRef(false);
   const dragStartY = useRef(0);
   const dragStartScroll = useRef(0);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
   const updateThumb = useCallback(() => {
     const container = containerRef.current;
@@ -127,8 +135,8 @@ export default function ScrollContainer({ children }: { children: React.ReactNod
           position: "absolute",
           right: "3px",
           top: "2px",
-          bottom: "20px",
-          width: "6px",
+          bottom: isMobile ? "10px" : "20px",
+          width: isMobile ? "2px" : "6px",
           cursor: "default",
         }}
       >
