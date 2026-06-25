@@ -1,42 +1,89 @@
 export default function Hero() {
   return (
-    <section
-      style={{
-        maxWidth: "1400px",
-        margin: "0 auto",
-        paddingLeft: "max(16px, 4.4vw)",
-        paddingRight: "max(16px, 4.4vw)",
-        paddingTop: "270px",
-        paddingBottom: "270px",
-      }}
-    >
-      <h1
-        style={{
-          color: "var(--text-primary)",
-          fontSize: "clamp(32px, 4vw, 56px)",
-          fontWeight: 500,
-          lineHeight: 1.15,
-          letterSpacing: "-0.02em",
-        }}
-      >
-        <span
-          className="hero-line-1"
-          style={{ display: "block", transition: "transform 0.3s cubic-bezier(0.25,0.46,0.45,0.94)" }}
-        >
-          One system for tasks,
-        </span>
-        <span
-          className="hero-line-2"
-          style={{ display: "block", transition: "transform 0.3s cubic-bezier(0.25,0.46,0.45,0.94)" }}
-        >
-          notes, and your AI agent
-        </span>
-      </h1>
-
+    <>
       <style>{`
-        h1:hover .hero-line-1 { transform: translateX(-18px); }
-        h1:hover .hero-line-2 { transform: translateX(18px); }
+        .hero-inner {
+          padding-left: 20px;
+          padding-right: 20px;
+          padding-top: 160px;
+          padding-bottom: 160px;
+        }
+        .hero-inner h1 {
+          font-size: 35px;
+        }
+        .hero-inner p {
+          font-size: 16px;
+        }
+        @media (min-width: 768px) {
+          .hero-inner {
+            padding-left: 40px;
+            padding-right: 40px;
+            padding-top: 180px;
+            padding-bottom: 180px;
+          }
+          .hero-inner h1 {
+            font-size: 45px;
+          }
+          .hero-inner p {
+            font-size: 18px;
+          }
+        }
+        @media (min-width: 1024px) {
+          .hero-inner {
+            padding-left: 60px;
+            padding-right: 60px;
+            padding-top: 160px;
+            padding-bottom: 160px;
+          }
+          .hero-inner h1 {
+            font-size: 55px;
+          }
+          .hero-inner p {
+            font-size: 20px;
+          }
+        }
+        @media (min-width: 1280px) {
+          .hero-inner {
+            padding-left: 80px;
+            padding-right: 80px;
+            padding-top: 180px;
+            padding-bottom: 180px;
+          }
+          .hero-inner h1 {
+            font-size: 65px;
+          }
+          .hero-inner p {
+            font-size: 22px;
+          }
+        }
       `}</style>
-    </section>
+      <section className="hero-inner">
+        <h1
+          style={{
+            color: "var(--text-primary)",
+            fontWeight: 500,
+            lineHeight: 1.15,
+            letterSpacing: "-0.02em",
+          }}
+        >
+          <span style={{ display: "block" }}>
+            Your AI agent runs the work.
+          </span>
+          <span style={{ display: "block" }}>
+            You run the vision.
+          </span>
+        </h1>
+        <p
+          style={{
+            color: "var(--text-secondary)",
+            fontWeight: 400,
+            lineHeight: 1.5,
+            marginTop: "20px",
+          }}
+        >
+          Built for freelancers who move fast and think bigger.
+        </p>
+      </section>
+    </>
   );
 }
