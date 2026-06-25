@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
-import ScrollContainer from "@/components/ScrollContainer";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -53,10 +52,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} h-full overflow-hidden antialiased`}>
-      <body className="h-full overflow-hidden font-[var(--font-inter)]">
+    <html lang="en" className={`${inter.variable} antialiased`}>
+      <body className="font-[var(--font-inter)]">
         <Navbar />
-        <ScrollContainer>{children}</ScrollContainer>
+        {children}
       </body>
     </html>
   );

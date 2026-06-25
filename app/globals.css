@@ -15,11 +15,41 @@
 
 html, body {
   overflow-x: hidden;
-  height: 100%;
 }
 
 body {
-  background: transparent;
+  background: var(--bg);
   color: var(--text-primary);
   font-family: var(--font-inter), sans-serif;
+}
+
+/* Scrollbar desktop (Webkit) */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(139, 143, 154, 0.4);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(139, 143, 154, 0.7);
+}
+
+/* Scrollbar Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(139, 143, 154, 0.4) transparent;
+}
+
+/* Nascondi scrollbar su mobile */
+@media (max-width: 767px) {
+  ::-webkit-scrollbar {
+    display: none;
+  }
+  * {
+    scrollbar-width: none;
+  }
 }
