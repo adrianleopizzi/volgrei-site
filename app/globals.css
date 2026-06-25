@@ -15,12 +15,13 @@
 
 html {
   overflow-x: hidden;
-  overflow-y: scroll;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(139, 143, 154, 0.4) transparent;
 }
 
 body {
   overflow-x: hidden;
-  overflow-y: visible;
+  overflow-y: auto;
   background: var(--bg);
   color: var(--text-primary);
   font-family: var(--font-inter), sans-serif;
@@ -47,8 +48,19 @@ main {
   background: rgba(139, 143, 154, 0.7);
 }
 
-/* Scrollbar Firefox */
-html {
-  scrollbar-width: thin;
-  scrollbar-color: rgba(139, 143, 154, 0.4) transparent;
+/* No text selection — deve stare in fondo per battere Tailwind */
+*,
+*::before,
+*::after {
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  -webkit-touch-callout: none !important;
+}
+
+input,
+textarea,
+[contenteditable] {
+  user-select: text !important;
+  -webkit-user-select: text !important;
+  -webkit-touch-callout: default !important;
 }
