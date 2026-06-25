@@ -55,7 +55,9 @@ export default function RootLayout({
     <html lang="en" className={`${inter.variable} antialiased`}>
       <body className="font-[var(--font-inter)]">
         <Navbar />
-        {children}
+        <main style={{ paddingTop: "65px" }}>
+          {children}
+        </main>
       </body>
     </html>
   );
