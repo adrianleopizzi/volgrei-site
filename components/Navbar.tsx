@@ -75,10 +75,32 @@ export default function Navbar() {
               padding-right: 80px;
             }
           }
+          .nav-divider-margin {
+            margin-right: 10px;
+          }
+          .nav-login-margin {
+            margin-left: 10px;
+          }
+          @media (min-width: 1024px) {
+            .nav-divider-margin {
+              margin-right: 13px;
+            }
+            .nav-login-margin {
+              margin-left: 13px;
+            }
+          }
+          @media (min-width: 1280px) {
+            .nav-divider-margin {
+              margin-right: 16px;
+            }
+            .nav-login-margin {
+              margin-left: 16px;
+            }
+          }
           .nav-pill {
             border-radius: 999px;
-            padding: 5px 10px 4px 10px;
-            font-size: 12px;
+            padding: 6px 12px 6px 12px;
+            font-size: 13px;
             font-weight: 400;
             transition: color 0.15s ease;
             background: transparent;
@@ -89,7 +111,7 @@ export default function Navbar() {
           }
           .nav-signup {
             border-radius: 999px;
-            padding: 7px 13px 6px 13px;
+            padding: 7px 13px 7px 13px;
             font-size: 13px;
             font-weight: 500;
             background: #f0f0f0;
@@ -108,8 +130,8 @@ export default function Navbar() {
             {/* Download — solo desktop */}
             <Link
               href="/download"
-              className="nav-pill md:block hidden"
-              style={{ color: "var(--text-secondary)", marginRight: "17px" }}
+              className="nav-pill nav-divider-margin md:block hidden"
+              style={{ color: "var(--text-secondary)" }}
             >
               Download
             </Link>
@@ -181,8 +203,8 @@ export default function Navbar() {
               <>
                 <Link
                   href="/login"
-                  className="nav-pill"
-                  style={{ color: "var(--text-secondary)", marginLeft: "17px" }}
+                  className="nav-pill nav-login-margin"
+                  style={{ color: "var(--text-secondary)" }}
                 >
                   Log in
                 </Link>
