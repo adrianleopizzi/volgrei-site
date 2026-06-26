@@ -30,58 +30,264 @@ const plans = [
 
 export default function Pricing() {
   return (
-    <section className="max-w-5xl mx-auto px-6 py-32">
-      <p className="text-[10px] tracking-widest uppercase mb-3" style={{ color: "var(--text-muted)" }}>Pricing</p>
-      <h2 className="text-3xl font-light tracking-tight mb-16 max-w-md" style={{ color: "var(--text-primary)" }}>
-        Simple pricing.<br />
-        <span style={{ color: "var(--text-muted)" }}>No surprises.</span>
-      </h2>
+    <>
+      <style>{`
+        .pricing-section {
+          padding-left: 20px;
+          padding-right: 20px;
+          padding-top: 80px;
+          padding-bottom: 100px;
+        }
+        @media (min-width: 768px) {
+          .pricing-section {
+            padding-left: 40px;
+            padding-right: 40px;
+            padding-top: 100px;
+            padding-bottom: 120px;
+          }
+        }
+        @media (min-width: 1024px) {
+          .pricing-section {
+            padding-left: 60px;
+            padding-right: 60px;
+            padding-top: 120px;
+            padding-bottom: 140px;
+          }
+        }
+        @media (min-width: 1280px) {
+          .pricing-section {
+            padding-left: 80px;
+            padding-right: 80px;
+            padding-top: 140px;
+            padding-bottom: 160px;
+          }
+        }
 
-      <div className="grid grid-cols-3 gap-4">
-        {plans.map((plan) => (
-          <div
-            key={plan.name}
-            className="rounded-xl p-6 flex flex-col gap-4 border"
-            style={{
-              background: plan.featured ? "var(--card)" : "var(--surface)",
-              borderColor: plan.featured ? "var(--accent)" : "var(--border)",
-            }}
-          >
-            {plan.featured && (
-              <span className="text-[9px] tracking-widest uppercase" style={{ color: "var(--accent)" }}>most popular</span>
-            )}
-            <div>
-              <p className="text-[10px] uppercase tracking-widest mb-2" style={{ color: "var(--text-muted)" }}>{plan.name}</p>
-              <p className="text-3xl font-light" style={{ color: "var(--text-primary)" }}>
-                {plan.price}
-                <span className="text-sm" style={{ color: "var(--text-muted)" }}>{plan.period}</span>
-              </p>
-              <p className="text-xs mt-2" style={{ color: "var(--text-muted)" }}>{plan.desc}</p>
-            </div>
+        .pricing-eyebrow {
+          font-size: 11px;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          margin-bottom: 20px;
+          user-select: none;
+          -webkit-user-select: none;
+        }
 
-            <ul className="flex flex-col gap-2 mt-2">
-              {plan.features.map((f) => (
-                <li key={f} className="flex items-center gap-2 text-xs" style={{ color: "var(--text-secondary)" }}>
-                  <span className="w-1 h-1 rounded-full flex-shrink-0" style={{ background: "var(--accent)" }} />
-                  {f}
-                </li>
-              ))}
-            </ul>
+        .pricing-heading {
+          font-size: 35px;
+          font-weight: 500;
+          line-height: 1.15;
+          letter-spacing: -0.02em;
+          margin-bottom: 60px;
+          max-width: 245px;
+          user-select: none;
+          -webkit-user-select: none;
+        }
+        @media (min-width: 768px) {
+          .pricing-heading {
+            font-size: 45px;
+            margin-bottom: 72px;
+            max-width: 482px;
+          }
+        }
+        @media (min-width: 1024px) {
+          .pricing-heading {
+            font-size: 50px;
+            margin-bottom: 80px;
+            max-width: 633px;
+          }
+        }
+        @media (min-width: 1280px) {
+          .pricing-heading {
+            font-size: 60px;
+            margin-bottom: 96px;
+            max-width: 784px;
+          }
+        }
 
-            <a
-              href="#"
-              className="mt-auto text-xs px-4 py-2.5 rounded-md text-center border transition-colors"
-              style={{
-                background: plan.featured ? "var(--accent)" : "transparent",
-                borderColor: plan.featured ? "var(--accent)" : "var(--border)",
-                color: plan.featured ? "#fff" : "var(--text-secondary)",
-              }}
+        .pricing-grid {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 1px;
+          background: var(--border);
+        }
+        @media (min-width: 768px) {
+          .pricing-grid {
+            grid-template-columns: 1fr 1fr 1fr;
+          }
+        }
+
+        .pricing-card {
+          background: var(--bg);
+          padding: 28px 24px;
+          display: flex;
+          flex-direction: column;
+          gap: 16px;
+          user-select: none;
+          -webkit-user-select: none;
+        }
+        @media (min-width: 768px) {
+          .pricing-card {
+            padding: 32px 28px;
+          }
+        }
+        @media (min-width: 1024px) {
+          .pricing-card {
+            padding: 36px 32px;
+          }
+        }
+        @media (min-width: 1280px) {
+          .pricing-card {
+            padding: 40px 36px;
+          }
+        }
+
+        .pricing-card-featured {
+          background: var(--card, var(--surface));
+        }
+
+        .pricing-popular {
+          font-size: 10px;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+          font-weight: 500;
+        }
+
+        .pricing-plan-name {
+          font-size: 10px;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+          margin-bottom: 10px;
+        }
+
+        .pricing-price {
+          font-size: 36px;
+          font-weight: 500;
+          letter-spacing: -0.02em;
+          line-height: 1;
+        }
+        @media (min-width: 1024px) {
+          .pricing-price {
+            font-size: 40px;
+          }
+        }
+        @media (min-width: 1280px) {
+          .pricing-price {
+            font-size: 44px;
+          }
+        }
+
+        .pricing-period {
+          font-size: 14px;
+          font-weight: 400;
+        }
+
+        .pricing-desc {
+          font-size: 13px;
+          font-weight: 400;
+          line-height: 1.5;
+          margin-top: 8px;
+        }
+
+        .pricing-features {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+          flex: 1;
+        }
+
+        .pricing-feature-item {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          font-size: 13px;
+          font-weight: 400;
+          line-height: 1.4;
+        }
+
+        .pricing-dot {
+          width: 4px;
+          height: 4px;
+          border-radius: 50%;
+          flex-shrink: 0;
+        }
+
+        .pricing-cta {
+          display: block;
+          font-size: 13px;
+          font-weight: 500;
+          text-align: center;
+          padding: 10px 16px;
+          border: 1px solid;
+          text-decoration: none;
+          letter-spacing: 0.01em;
+          transition: opacity 0.15s ease;
+          margin-top: 8px;
+        }
+        .pricing-cta:hover {
+          opacity: 0.75;
+        }
+      `}</style>
+
+      <section id="pricing" className="pricing-section">
+        <p className="pricing-eyebrow" style={{ color: "var(--text-muted)" }}>
+          Pricing
+        </p>
+        <h2 className="pricing-heading" style={{ color: "var(--text-primary)" }}>
+          Simple pricing.{" "}
+          <span style={{ color: "var(--text-muted)" }}>No surprises.</span>
+        </h2>
+
+        <div className="pricing-grid">
+          {plans.map((plan) => (
+            <div
+              key={plan.name}
+              className={`pricing-card${plan.featured ? " pricing-card-featured" : ""}`}
             >
-              {plan.cta}
-            </a>
-          </div>
-        ))}
-      </div>
-    </section>
+              {plan.featured && (
+                <span className="pricing-popular" style={{ color: "var(--accent)" }}>
+                  Most popular
+                </span>
+              )}
+
+              <div>
+                <p className="pricing-plan-name" style={{ color: "var(--text-muted)" }}>
+                  {plan.name}
+                </p>
+                <p className="pricing-price" style={{ color: "var(--text-primary)" }}>
+                  {plan.price}
+                  <span className="pricing-period" style={{ color: "var(--text-muted)" }}>
+                    {plan.period}
+                  </span>
+                </p>
+                <p className="pricing-desc" style={{ color: "var(--text-muted)" }}>
+                  {plan.desc}
+                </p>
+              </div>
+
+              <ul className="pricing-features">
+                {plan.features.map((f) => (
+                  <li key={f} className="pricing-feature-item" style={{ color: "var(--text-secondary)" }}>
+                    <span className="pricing-dot" style={{ background: "var(--accent)" }} />
+                    {f}
+                  </li>
+                ))}
+              </ul>
+
+              <a
+                href="#"
+                className="pricing-cta"
+                style={{
+                  background: plan.featured ? "var(--accent)" : "transparent",
+                  borderColor: plan.featured ? "var(--accent)" : "var(--border)",
+                  color: plan.featured ? "#fff" : "var(--text-secondary)",
+                }}
+              >
+                {plan.cta}
+              </a>
+            </div>
+          ))}
+        </div>
+      </section>
+    </>
   );
 }
