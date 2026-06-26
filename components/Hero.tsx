@@ -9,7 +9,7 @@ export default function Hero() {
           padding-bottom: 160px;
         }
         .hero-inner h1 {
-          font-size: 40px;
+          font-size: 35px;
         }
         .hero-inner p {
           font-size: 14px;
@@ -24,7 +24,7 @@ export default function Hero() {
             font-size: 45px;
           }
           .hero-inner p {
-            font-size: 15px;
+            font-size: 14px;
           }
         }
         @media (min-width: 1024px) {
@@ -38,7 +38,7 @@ export default function Hero() {
             font-size: 50px;
           }
           .hero-inner p {
-            font-size: 16px;
+            font-size: 14px;
           }
         }
         @media (min-width: 1280px) {
@@ -52,7 +52,7 @@ export default function Hero() {
             font-size: 60px;
           }
           .hero-inner p {
-            font-size: 17px;
+            font-size: 14px;
           }
         }
         .hero-inner h1,
@@ -60,6 +60,25 @@ export default function Hero() {
           user-select: none;
           -webkit-user-select: none;
           -webkit-touch-callout: none;
+          max-width: 245px;
+        }
+        @media (min-width: 768px) {
+          .hero-inner h1,
+          .hero-inner p {
+            max-width: 482px;
+          }
+        }
+        @media (min-width: 1024px) {
+          .hero-inner h1,
+          .hero-inner p {
+            max-width: 633px;
+          }
+        }
+        @media (min-width: 1280px) {
+          .hero-inner h1,
+          .hero-inner p {
+            max-width: 784px;
+          }
         }
         .hero-inner p {
           margin-top: 17px;
